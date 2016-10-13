@@ -13,7 +13,7 @@
 		<!-- Latest compiled and minified jQuery -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-		<!-- Latest compiled and minified CSS -->
+		<!-- Latest compiled Bootstrap and minified CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
 			integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 			crossorigin="anonymous">
@@ -28,11 +28,16 @@
 			integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
 			crossorigin="anonymous"></script>
 
+		<!-- Latest compiled and minifed jQuery UI. Used for the UI sliders. -->
+		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+			integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+			crossorigin="anonymous"></script>
+
 		<!-- Custom styles for this template -->
 		<link href="jumbotron-narrow.css" rel="stylesheet">
 		
 		<!-- Import physics related Javascript -->
-		<script type="text/javascript" src="physics.js"></script>
+		<script type="text/javascript" src="Physics.js"></script>
 		
 		<!-- Import particle Javascript. -->
 		<script type="text/javascript" src="Particle.js"></script>
@@ -66,31 +71,39 @@
 				<div class="col-lg-6">
 					<h4>Subheading</h4>
 					<div>
-						<button class="btn btn-sm btn-primary" type="button">Rain falling</button>
+						<button id="rainButton" class="btn btn-sm btn-primary" type="button">Rain</button>
+						<button id="snowButton" class="btn btn-sm btn-primary" type="button">Snow</button>
 						<button id="playPauseButton" class="btn btn-sm btn-primary" type="button">Play/Pause</button>
-						
+
+						<!-- Alert message when one of the input fields is invalid. -->
+						<div id="alert" class="alert alert-danger" role="alert" style="display: none; margin-bottom: 0px !important;">
+							<strong>ERROR:</strong> Invalid number!
+						</div>
+
 						<!-- Input for emission rate -->
 						<div class="input-group">
-							<span class="input-group-btn" id="sizing-addon1">
+							<span class="input-group-btn">
 								<button id="rateButton" class="btn btn-default" type="button">Emission Rate</button>
 							</span>
-							<input id="rateInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)" aria-describedby="sizing-addon1">
-						</div>
-						<div id="rateAlert" class="alert alert-danger" role="alert" style="display: none;">
-							<strong>ERROR:</strong> Please submit a number between 1 and MAX_NUM (inclusive)
+							<input id="rateInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)">
 						</div>
 
 						<!-- Input for Maxiumum particle count -->
 						<div class="input-group">
-							<span class="input-group-btn" id="sizing-addon1">
+							<span class="input-group-btn">
 								<button id="particlesButton" class="btn btn-default" type="button">Maximum Particles</button>
 							</span>
-							<input id="particlesInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)" aria-describedby="sizing-addon1">
+							<input id="particlesInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)">
 						</div>
-						<div id="particlesAlert" class="alert alert-danger" role="alert" style="display: none;">
-							<strong>ERROR:</strong> Please submit a number between 1 and MAX_NUM (inclusive)
+
+						<!-- Input for maximum canvas Height -->
+						<div class="input-group">
+							<span class="input-group-btn">
+								<button id="particleSizeButton" class="btn btn-default" type="button">Particle size</button>
+							</span>
+							<input id="particleSizeInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)">
 						</div>
-						
+
 					</div>
 				</div>
 			</div>

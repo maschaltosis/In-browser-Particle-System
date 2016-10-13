@@ -1,11 +1,12 @@
-var canvas = document.createElement("canvas");;
+var canvas = document.createElement("canvas");
 var ctx = canvas.getContext('2d');
 
 var emitters = [], fields = [], particles = [];
 
 var maxParticles, emissionRate, canvasHeight,
 	canvasWidth, minimumSpeed, maximumSpeed,
-	objectSize, play, fieldsOn, count, windiness;
+	objectSize, play = true, fieldsOn, count, windiness,
+	gravity, particleColor;
 
 function toggleIntro(simulation) {
 	document.getElementById("intro").style.display = "none";
@@ -16,39 +17,44 @@ function toggleIntro(simulation) {
 	canvas.width = canvasWidth;
 	canvas.style.display = "inline-block";
 	canvas.style.border = "2px solid grey";
+    canvas.style.backgroundColor = "white";
 	
 	simulation;
+    loop();
 }
 
+// Run the rain simulation!
 function rain() {
-	maxParticles = 2000;
+	particleColor = 'rgb(0,0,0)';
+	maxParticles = 10000;
 	emissionRate = 15;
 	particleSize = 1;
 	canvasHeight = 400;
 	canvasWidth = 600;
 	minimumSpeed = 2.25;
-	maximumSpeed = 3.5;
+	maximumSpeed = 4;
 	objectSize = 3;
-	fieldsOn = false;
+	//fieldsOn = false;
+	gravity = new Vector(0,.0025);
 	
 	//Creates an emitter that emits particles down.
 	//	Located at (x: 0, y: 0)
 	//	Outputs at angle PI/2 (270 degrees)
 	//	Particle spread of PI/32
 	emitters = [new Emitter(new Vector(0, 0), Vector.fromAngle(Math.PI/2, 1), Math.PI/32)];
-	
+	/*
 	if(fieldsOn) {
 		for(var i = 0; i < canvasHeight * 2; i += 20) {
 		fields.push(new Field(new Vector(- 100, i), -50));
 		}
 	}
-	
-	
-	play = true;
-	loop();
+	*/
+    play = true;
 }
+
+//Run the snow simulation!
 function snow() {
-	emitters = [new Emitter(new Vector(0, 0), Vector.fromAngle(Math.PI/2, 1), Math.PI/4)];
+	particleColor = 'rgb(0,0,0)';
 	maxParticles = 1000;
 	emissionRate = 10;
 	particleSize = 1;
@@ -57,8 +63,11 @@ function snow() {
 	minimumSpeed = .1;
 	maximumSpeed = 2;
 	objectSize = 3;
-	play = true;
-	loop();
+	gravity = new Vector(0, .015);
+
+    emitters = [new Emitter(new Vector(0, 0), Vector.fromAngle(Math.PI/2, 1), Math.PI/4)];
+
+    play = true;
 }
 
 function addNewParticles() {
@@ -91,26 +100,34 @@ function plotParticles(boundsX, boundsY) {
 		}
 		// Update velocities and accelerations to account for fields.
 		particle.submitToFields(fields);
-		
+
+
 		//Move the particle
 		particle.move();
 		
 		//Add this particle to the list of current particles
 		currentParticles.push(particle);
 	}
+	count = count + 1;
 	particles = currentParticles;
 }
 
 function drawParticles() {
 	//Set the color of our particles.
-	ctx.fillStyle = 'rgb(0,0,255)';
-	
-	// For each particle
+	ctx.fillStyle = particleColor;
+
+
+	// For each particle, draw a square.
+	particles.forEach(drawCircle);
+
+	/*
+	// For each particle, draw a square.
 	for(var i = 0; i < particles.length; i++) {
 		var position = particles[i].position;
-		
+
 		ctx.fillRect(position.x, position.y, particleSize, particleSize);
 	}
+	*/
 }
 
 // `object` is a field or emitter, something that has a drawColor and position
@@ -118,7 +135,7 @@ function drawParticles() {
 function drawCircle(object) {
 	ctx.fillStyle = object.drawColor;
 	ctx.beginPath();
-	ctx.arc(object.position.x, object.position.y, objectSize, 0, Math.PI * 2);
+	ctx.arc(object.position.x, object.position.y, particleSize, 0, Math.PI * 2);
 	ctx.closePath();
 	ctx.fill();
 }
@@ -153,4 +170,10 @@ function queue() {
 	else {
 		//pause
 	}
+}
+// Clears the simulation of old particles, emitters, and fields.
+function clearArrays() {
+	particles = [];
+	emitters = [];
+	fields = [];
 }

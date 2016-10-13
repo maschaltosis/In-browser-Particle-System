@@ -9,7 +9,7 @@ function Particle(point, velocity, acceleration) {
 Particle.prototype.move = function() {
 	//Adds the acceleration to the velocity
 	this.velocity.add(this.acceleration);
-	
+
 	//Adds the velocity to the position.
 	this.position.add(this.velocity);
 }
@@ -17,8 +17,8 @@ Particle.prototype.move = function() {
 //Adjust the particles' accelerations due to fields.
 //This was added to simulate gravity.
 Particle.prototype.submitToFields = function(field) {
-	var totalAccelerationX = 0;
-	var totalAccelerationY = 0;
+	var totalAccelerationX = this.acceleration.x;
+	var totalAccelerationY = this.acceleration.y;
 	
 	//for each field
 	for(var i = 0; i < fields.length; i++) {
@@ -64,11 +64,23 @@ Emitter.prototype.emitParticle = function() {
 	var position = new Vector(getRandomArbitrary(0, canvasWidth), this.position.y);
 	
 	var velocity = Vector.fromAngle(angle, magnitude * getRandomArbitrary(minimumSpeed, maximumSpeed));
-	
-	return new Particle(position, velocity, 9.8);
+
+	// Default the particle's acceleration to gravity.
+	// Creates an acceleration with an X-component of 0 and Y-component of whatever 'gravity' is set to.
+	// This creates a vertical acceleration of 'gravity'
+	var acceleration = gravity || new Vector(0,0);
+
+	return new Particle(position, velocity, acceleration);
 }
 
 // Returns a random number between min (inclusive) and max (exclusive)
 function getRandomArbitrary(min, max) {
 	return Math.random() * (max - min) + min;
 }
+
+/*
+// Adds an acceleration to the particle to simulate a gust of wind.
+Particle.prototype.windEffect = function(wind) {
+	this.acceleration = new Vector(this.acceleration.x + wind.x/randomFactor,this.acceleration.y + wind.y/randomFactor);
+}
+*/
