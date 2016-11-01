@@ -38,11 +38,50 @@ Particle.prototype.submitToFields = function(field) {
 	// update our particle's acceleration
 	this.acceleration = new Vector(totalAccelerationX, totalAccelerationY);
 }
+/* Creates a Wind object.
+ *	Magnitude: Strength of the wind.
+ *  Direction: Direction of the wind.
+ *  Spread: Variability in the wind direction.
+ */
+
+
+function Wind(magnitude, direction, spread) {
+	this.magnitude = magnitude;
+	this.direction = direction;
+	this.spread = spread;
+}
+
+
+var x = -2;
+var increase = .01;// 4 iterations
+var strengthFactor;
+function calculateWind() {
+
+	if(x >= windiness) {
+		x = -2;
+	}
+	else {
+		strengthFactor = Math.pow(Math.E,- Math.pow(x, 2));
+
+	}
+	console.log(strengthFactor);
+	x += increase;
+}
+
+Particle.prototype.blowWind = function(wind) {
+	var variability = getRandomArbitrary(-wind.spread, wind.spread);
+	windStrengthX = wind.magnitude * strengthFactor * Math.cos(wind.direction + variability);
+	windStrengthY = wind.magnitude * strengthFactor * Math.sin(wind.direction + variability);
+
+	windVector = new Vector(windStrengthX, windStrengthY);
+
+	this.velocity.add(windVector);
+}
 
 //Creates a point where particles are emitted.
 // Point: Location of the Emitter.
 // Velocity: Velocity of the emitted particles.
-// Spread:
+// Spread: Defines the possible angles that the particles can be emitted.
 function Emitter(point, velocity, spread) {
 	this.position = point;
 	this.velocity = velocity;

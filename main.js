@@ -1,31 +1,38 @@
+// This creates the HTML canvas object which will hold the majority of the simluation.
 var canvas = document.createElement("canvas");
 var ctx = canvas.getContext('2d');
 
 var emitters = [], fields = [], particles = [];
 
-var maxParticles, emissionRate, canvasHeight,
-	canvasWidth, minimumSpeed, maximumSpeed,
+var maxParticles, emissionRate, canvasHeight = 400,
+	canvasWidth = 400, minimumSpeed, maximumSpeed,
 	objectSize, play = true, fieldsOn, count, windiness,
-	gravity, particleColor;
+	gravity, particleColor, wind, windOn;
 
 function toggleIntro(simulation) {
+	// Hides the initial simulation selection screen.
 	document.getElementById("intro").style.display = "none";
-	outerDiv = document.getElementsByClassName("jumbotron")[0];
-	
-	outerDiv.appendChild(canvas);
-	canvas.height = canvasHeight;
-	canvas.width = canvasWidth;
+
+	// This appends the canvas object to the correct HTML location and then
+	//   sets the proper attributes to it.
+	var containerDiv = document.getElementsByClassName("jumbotron")[0];
+	containerDiv.appendChild(canvas);
+	canvas.height = canvasHeight;// Default: 400
+	canvas.width = canvasWidth;// Default: 400
 	canvas.style.display = "inline-block";
 	canvas.style.border = "2px solid grey";
     canvas.style.backgroundColor = "white";
-	
+
+	// Sets the correct variables and settings for the selected simulation.
 	simulation;
+
+	// Starts the simulation.
     loop();
 }
 
 // Run the rain simulation!
 function rain() {
-	particleColor = 'rgb(0,0,0)';
+	particleColor = 'rgb(0,0,0)';// Black
 	maxParticles = 10000;
 	emissionRate = 15;
 	particleSize = 1;
@@ -36,37 +43,66 @@ function rain() {
 	objectSize = 3;
 	//fieldsOn = false;
 	gravity = new Vector(0,.0025);
+
+	windOn = false;
+	windiness = 5;
 	
-	//Creates an emitter that emits particles down.
-	//	Located at (x: 0, y: 0)
-	//	Outputs at angle PI/2 (270 degrees)
-	//	Particle spread of PI/32
+	/* Creates an emitter that emits particles down.
+	 *   Located at (x: 0, y: 0)
+	 *   Outputs at angle PI/2 (270 degrees)
+	 *   Particle spread of PI/32
+	 */
 	emitters = [new Emitter(new Vector(0, 0), Vector.fromAngle(Math.PI/2, 1), Math.PI/32)];
 	/*
 	if(fieldsOn) {
 		for(var i = 0; i < canvasHeight * 2; i += 20) {
-		fields.push(new Field(new Vector(- 100, i), -50));
+			fields.push(new Field(new Vector(- 100, i), -50));
 		}
 	}
 	*/
+
     play = true;
 }
 
 //Run the snow simulation!
 function snow() {
-	particleColor = 'rgb(0,0,0)';
-	maxParticles = 1000;
+	particleColor = 'rgb(0,0,0)';// Black
+	maxParticles = 10000;
 	emissionRate = 10;
 	particleSize = 1;
 	canvasHeight = 400;
 	canvasWidth = 600;
-	minimumSpeed = .1;
+	minimumSpeed = 1;
 	maximumSpeed = 2;
 	objectSize = 3;
-	gravity = new Vector(0, .015);
+	gravity = new Vector(0, .001);
+	fieldsOn = false;
 
-    emitters = [new Emitter(new Vector(0, 0), Vector.fromAngle(Math.PI/2, 1), Math.PI/4)];
+	windOn = true;
+	windiness = 5;
 
+	/* Creates the emitters for the simulation.
+	 * 	Located at (x: 0, y: 0)
+	 * 	Outputs at angle PI/2 (270 degrees)
+	 * 	Particle spread of PI/4
+	 */
+    emitters = [new Emitter(new Vector(0, 0), Vector.fromAngle(Math.PI/2, 1), Math.PI/8)];
+
+
+	if(fieldsOn) {
+		for(var i = 0; i < canvasHeight * 2; i += 20) {
+			fields.push(new Field(new Vector(-100, i), -50));
+		}
+	}
+
+	/* Creates Wind
+	 *  Has a magnitude of .075
+	 *  Points in the direction Math.PI/16
+	 *  Has the variability of Math.PI/64
+	 */
+	if(windOn) {
+		wind = new Wind(.075, Math.PI/16, Math.PI/64);
+	}
     play = true;
 }
 
@@ -89,7 +125,10 @@ function addNewParticles() {
 function plotParticles(boundsX, boundsY) {
 	//Particles within bounds
 	var currentParticles = [];
-	
+	if(windOn) {
+		// Calculates the wind speed at this frame.
+		calculateWind();
+	}
 	for(var i = 0; i < particles.length; i++) {
 		var particle = particles[i];
 		var pos = particle.position;
@@ -101,6 +140,12 @@ function plotParticles(boundsX, boundsY) {
 		// Update velocities and accelerations to account for fields.
 		particle.submitToFields(fields);
 
+		//particle.velocity.x += .01;
+
+		if(windOn) {
+			// Update the acceleration of the particle depending on the wind.
+			particle.blowWind(wind);
+		}
 
 		//Move the particle
 		particle.move();
