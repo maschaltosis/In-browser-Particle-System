@@ -12,11 +12,11 @@ Particle.prototype.move = function() {
 
 	//Adds the velocity to the position.
 	this.position.add(this.velocity);
-}
+};
 
 //Adjust the particles' accelerations due to fields.
 //This was added to simulate gravity.
-Particle.prototype.submitToFields = function(field) {
+Particle.prototype.submitToFields = function() {
 	var totalAccelerationX = this.acceleration.x;
 	var totalAccelerationY = this.acceleration.y;
 	
@@ -37,7 +37,7 @@ Particle.prototype.submitToFields = function(field) {
 	}
 	// update our particle's acceleration
 	this.acceleration = new Vector(totalAccelerationX, totalAccelerationY);
-}
+};
 /* Creates a Wind object.
  *	Magnitude: Strength of the wind.
  *  Direction: Direction of the wind.
@@ -64,7 +64,7 @@ function calculateWind() {
 		strengthFactor = Math.pow(Math.E,- Math.pow(x, 2));
 
 	}
-	console.log(strengthFactor);
+	//console.log(strengthFactor);
 	x += increase;
 }
 
@@ -76,7 +76,7 @@ Particle.prototype.blowWind = function(wind) {
 	windVector = new Vector(windStrengthX, windStrengthY);
 
 	this.velocity.add(windVector);
-}
+};
 
 //Creates a point where particles are emitted.
 // Point: Location of the Emitter.
@@ -110,7 +110,7 @@ Emitter.prototype.emitParticle = function() {
 	var acceleration = gravity || new Vector(0,0);
 
 	return new Particle(position, velocity, acceleration);
-}
+};
 
 // Returns a random number between min (inclusive) and max (exclusive)
 function getRandomArbitrary(min, max) {

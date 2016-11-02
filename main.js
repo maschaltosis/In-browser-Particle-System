@@ -10,6 +10,7 @@ var maxParticles, emissionRate, canvasHeight = 400,
 	gravity, particleColor, wind, windOn;
 
 function toggleIntro(simulation) {
+	$('#control-panel').css('display','block');
 	// Hides the initial simulation selection screen.
 	document.getElementById("intro").style.display = "none";
 
@@ -24,7 +25,7 @@ function toggleIntro(simulation) {
     canvas.style.backgroundColor = "white";
 
 	// Sets the correct variables and settings for the selected simulation.
-	simulation;
+	simulation();
 
 	// Starts the simulation.
     loop();
@@ -138,7 +139,7 @@ function plotParticles(boundsX, boundsY) {
 			continue;
 		}
 		// Update velocities and accelerations to account for fields.
-		particle.submitToFields(fields);
+		particle.submitToFields();
 
 		//particle.velocity.x += .01;
 

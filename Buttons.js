@@ -21,14 +21,32 @@ var particlesInput = $('#particlesInput');
 var particleSizeButton = $('#particleSizeButton');
 var particleSizeInput = $('#particleSizeInput');
 
-var canvasMinInput = $('#canvasMinInput');
+//var canvasMinInput = $('#canvasMinInput');
 
 function playPause() {
 	play = !play;
 	if(play) {
 		loop();
 	}
+	else {
+
+	}
 }
+
+// Intro snow button should start the snow simulation and disable to snow button.
+$('#startSnowButton').on('click', function() {
+	toggleIntro(snow());
+	rainButton.removeAttr('disabled');
+	snowButton.prop('disabled','true');
+});
+
+// Intro rain button should start the rain simulation and disable to rain button.
+$('#startRainButton').on('click', function() {
+	toggleIntro(rain());
+	snowButton.removeAttr('disabled');
+	rainButton.prop('disabled','true');
+});
+
 
 // Stops and starts the animation.
 $('#playPauseButton').on('click', function() {
@@ -192,4 +210,16 @@ snowButton.on('click', function() {
 	snow();// Start the snow simluation.
 	snowButton.prop('disabled','true');
 	rainButton.removeAttr('disabled');
+});
+
+var windToggleButton = $('#windToggleButton');// Selector for the Wind toggle Button
+// This toggles the wind and changes the button text whenever the button is clicked.
+windToggleButton.on('click', function() {
+	windOn = !windOn;
+	if(windOn) {
+		windToggleButton.html('Wind: Enabled');
+	}
+	else {
+		windToggleButton.html('Wind: Disabled');
+	}
 });

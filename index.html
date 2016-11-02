@@ -38,7 +38,7 @@
 		<link href="jumbotron-narrow.css" rel="stylesheet">
 		
 		<!-- Import physics related Javascript -->
-		<script type="text/javascript" src="Physics.js"></script>
+		<script type="text/javascript" src="physics.js"></script>
 		
 		<!-- Import particle Javascript. -->
 		<script type="text/javascript" src="Particle.js"></script>
@@ -64,47 +64,46 @@
 				<div id="intro">
 					<h1>2D GAME</h1>
 					<p class="lead">Which simulation would you like to start with first?</p>
-					<p><button class="btn btn-sm btn-primary" type="button" onclick="toggleIntro(snow());">Snow blowing and falling.</button></p>
-					<p><button class="btn btn-sm btn-primary" type="button" onclick="toggleIntro(rain());">Rain falling.</button></p>
+					<p><button id="startSnowButton" class="btn btn-sm btn-primary" type="button">Snow blowing and falling.</button></p>
+					<p><button id="startRainButton" class="btn btn-sm btn-primary" type="button">Rain falling.</button></p>
 				</div>
 			</div>
-			<div class="row marketing">
+			<!-- Don't display this until the simulation has started. -->
+			<div class="row marketing" id="control-panel" style="display: none">
 				<div class="col-lg-6">
-					<h4>Subheading</h4>
-					<div>
-						<button id="rainButton" class="btn btn-sm btn-primary" type="button">Rain</button>
-						<button id="snowButton" class="btn btn-sm btn-primary" type="button">Snow</button>
-						<button id="playPauseButton" class="btn btn-sm btn-primary" type="button">Play/Pause</button>
+					<h4>Advanced Options</h4>
+					<button id="rainButton" class="btn btn-sm btn-primary" type="button">Rain</button>
+					<button id="snowButton" class="btn btn-sm btn-primary" type="button">Snow</button>
+					<button id="playPauseButton" class="btn btn-sm btn-primary" type="button">Play/Pause</button>
+					<button id="windToggleButton" class="btn btn-sm btn-primary" type="button">Wind: Enabled</button>
 
-						<!-- Alert message when one of the input fields is invalid. -->
-						<div id="alert" class="alert alert-danger" role="alert" style="display: none; margin-bottom: 0px !important;">
-							<strong>ERROR:</strong> Invalid number!
-						</div>
+					<!-- Alert message when one of the input fields is invalid. -->
+					<div id="alert" class="alert alert-danger" role="alert" style="display: none; margin-bottom: 0 !important;">
+						<strong>ERROR:</strong> Invalid number!
+					</div>
 
-						<!-- Input for emission rate -->
-						<div class="input-group">
-							<span class="input-group-btn">
-								<button id="rateButton" class="btn btn-default" type="button">Emission Rate</button>
-							</span>
-							<input id="rateInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)">
-						</div>
+					<!-- Input for emission rate -->
+					<div class="input-group">
+						<span class="input-group-btn">
+							<button id="rateButton" class="btn btn-default" type="button">Emission Rate</button>
+						</span>
+						<input id="rateInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)">
+					</div>
 
-						<!-- Input for Maxiumum particle count -->
-						<div class="input-group">
-							<span class="input-group-btn">
-								<button id="particlesButton" class="btn btn-default" type="button">Maximum Particles</button>
-							</span>
-							<input id="particlesInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)">
-						</div>
+					<!-- Input for Maxiumum particle count -->
+					<div class="input-group">
+						<span class="input-group-btn">
+							<button id="particlesButton" class="btn btn-default" type="button">Maximum Particles</button>
+						</span>
+						<input id="particlesInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)">
+					</div>
 
-						<!-- Input for maximum canvas Height -->
-						<div class="input-group">
-							<span class="input-group-btn">
-								<button id="particleSizeButton" class="btn btn-default" type="button">Particle size</button>
-							</span>
-							<input id="particleSizeInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)">
-						</div>
-
+					<!-- Input for maximum canvas Height -->
+					<div class="input-group">
+						<span class="input-group-btn">
+							<button id="particleSizeButton" class="btn btn-default" type="button">Particle size</button>
+						</span>
+						<input id="particleSizeInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)">
 					</div>
 				</div>
 			</div>
