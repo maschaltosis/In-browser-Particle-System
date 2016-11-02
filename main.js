@@ -25,7 +25,7 @@ function toggleIntro(simulation) {
     canvas.style.backgroundColor = "white";
 
 	// Sets the correct variables and settings for the selected simulation.
-	simulation();
+	simulation;
 
 	// Starts the simulation.
     loop();
