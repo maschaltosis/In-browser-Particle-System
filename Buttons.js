@@ -4,7 +4,7 @@ var rateBool = true, particlesBool = true, particleSizeBool = true;
 // Maximums for the input fields.
 var maxEmissionRate = 2500;
 var maxParticleSize = 25;
-var maxParticlesNumber = 2500;
+var maxParticlesNumber = 10000;
 
 // Selector for the alert dialog.
 var alert = $('#alert');
@@ -21,22 +21,17 @@ var particlesInput = $('#particlesInput');
 var particleSizeButton = $('#particleSizeButton');
 var particleSizeInput = $('#particleSizeInput');
 
-//var canvasMinInput = $('#canvasMinInput');
-
+// This is the functino that pauses and plays the simulation.
 function playPause() {
 	play = !play;
 	if(play) {
 		loop();
-	}
-	else {
-
 	}
 }
 
 // Intro snow button should start the snow simulation and disable to snow button.
 $('#startSnowButton').on('click', function() {
 	toggleIntro(snow());
-	rainButton.removeAttr('disabled');
 	snowButton.prop('disabled','true');
 	setDefaults();
 });
@@ -44,9 +39,17 @@ $('#startSnowButton').on('click', function() {
 // Intro rain button should start the rain simulation and disable to rain button.
 $('#startRainButton').on('click', function() {
 	toggleIntro(rain());
-	snowButton.removeAttr('disabled');
 	rainButton.prop('disabled','true');
 	setDefaults();
+});
+
+// Intro rain button should start the rain simulation and disable to rain button.
+// Also disable the wind button because the insect simulation has no wind.
+$('#startInsectButton').on('click', function() {
+    toggleIntro(insect());
+    insectButton.prop('disabled','true');
+    windToggleButton.prop('disabled','true');
+    setDefaults();
 });
 
 
@@ -185,7 +188,6 @@ function setMaxParticleSizePlaceholder() {
 }
 
 function setDefaults() {
-	console.log('set defaults');
 	// Sets the placeholder text of the inputs.
 	setRateInputPlaceholder();
 	setParticlesInputPlaceholder();
@@ -195,16 +197,34 @@ function setDefaults() {
 	rateInput.val(emissionRate);
 	particlesInput.val(maxParticles);
 	particleSizeInput.val(particleSize);
+
+    // Sets the default text for the wind dialog button.
+    if(windOn) {
+        windToggleButton.html('Wind: Enabled');
+    }
+    else {
+        windToggleButton.html('Wind: Disabled');
+    }
+}
+
+// Clears the simulation of old particles, emitters, and fields.
+function clearArrays() {
+    particles = []; //Clears the particle Array.
+    emitters = []; //Clears the emitters Array.
+    fields = []; //Clears the fields Array.
 }
 
 var rainButton = $('#rainButton');// Selector for the rain button
 var snowButton = $('#snowButton');// Selector for the snowButton
+var insectButton = $('#insectButton');// Selector for the insectButton
 // Changes the simulation to rain.
 rainButton.on('click', function() {
 	playPause();// Stop all other simulations.
 	clearArrays();// Clear simulation.
 	snowButton.removeAttr('disabled');
 	rainButton.prop('disabled','true');
+    insectButton.removeAttr('disabled');
+    windToggleButton.removeAttr('disabled');
 	rain();// Start the rain simluation.
 	setDefaults();
 });
@@ -214,13 +234,30 @@ snowButton.on('click', function() {
 	clearArrays();// Clear simulation.
 	snowButton.prop('disabled','true');
 	rainButton.removeAttr('disabled');
+    insectButton.removeAttr('disabled');
+    windToggleButton.removeAttr('disabled');
 	snow();// Start the snow simluation.
 	setDefaults();
+});
+
+insectButton.on('click', function() {
+    playPause();// Stop all other simulations.
+    clearArrays();// Clear simulation.
+    windToggleButton.prop('disabled','true');
+    insectButton.prop('disabled','true');// Make the insect button unclickable
+    rainButton.removeAttr('disabled');
+    snowButton.removeAttr('disabled');
+    insect();// Start the insect simluation.
+    setDefaults();
 });
 
 var windToggleButton = $('#windToggleButton');// Selector for the Wind toggle Button
 // This toggles the wind and changes the button text whenever the button is clicked.
 windToggleButton.on('click', function() {
+    if(insectButton.prop('disabled') === true) {
+        windToggleButton.prop('disabled','true');
+        return;
+    }
 	windOn = !windOn;
 	if(windOn) {
 		windToggleButton.html('Wind: Enabled');

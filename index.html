@@ -19,19 +19,14 @@
 			integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
 			crossorigin="anonymous">
 
-		<!-- Optional theme -->
+		<!-- Optional theme that makes things look nicer. -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
 			integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp"
 			crossorigin="anonymous">
 
-		<!-- Latest compiled and minified JavaScript -->
+		<!-- Latest compiled and minified Bootstrap Code -->
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
 			integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-			crossorigin="anonymous"></script>
-
-		<!-- Latest compiled and minifed jQuery UI. Used for the UI sliders. -->
-		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-			integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
 			crossorigin="anonymous"></script>
 
 		<!-- Custom styles for this template -->
@@ -45,7 +40,6 @@
 		
 		<!-- Import canvas and basic buffer functions. -->
 		<script type="text/javascript" src="main.js"></script>
-		
 	</head>
 	<body>
 		<div class="container">
@@ -66,6 +60,7 @@
 					<p class="lead">Which simulation would you like to start with first?</p>
 					<p><button id="startSnowButton" class="btn btn-sm btn-primary" type="button">Snow blowing and falling.</button></p>
 					<p><button id="startRainButton" class="btn btn-sm btn-primary" type="button">Rain falling.</button></p>
+					<p><button id="startInsectButton" class="btn btn-sm btn-primary" type="button">Insect Swarm.</button></p>
 				</div>
 			</div>
 			<!-- Don't display this until the simulation has started. -->
@@ -74,6 +69,7 @@
 					<h4>Advanced Options</h4>
 					<button id="rainButton" class="btn btn-sm btn-primary" type="button">Rain</button>
 					<button id="snowButton" class="btn btn-sm btn-primary" type="button">Snow</button>
+					<button id="insectButton" class="btn btn-sm btn-primary" type="button">Insect</button>
 					<button id="playPauseButton" class="btn btn-sm btn-primary" type="button">Play/Pause</button>
 					<button id="windToggleButton" class="btn btn-sm btn-primary" type="button">Wind: Enabled</button>
 
@@ -98,7 +94,7 @@
 						<input id="particlesInput" type="text" class="form-control" placeholder="between 1 and 100 (inclusive)">
 					</div>
 
-					<!-- Input for maximum canvas Height -->
+					<!-- Input for particle size -->
 					<div class="input-group">
 						<span class="input-group-btn">
 							<button id="particleSizeButton" class="btn btn-default" type="button">Particle size</button>
