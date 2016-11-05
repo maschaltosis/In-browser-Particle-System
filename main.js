@@ -4,7 +4,7 @@ var ctx = canvas.getContext('2d');
 
 var emitters = [], fields = [], particles = [];
 
-var maxParticles, emissionRate, canvasHeight = 400,
+var maxParticles, particleSize, emissionRate, canvasHeight = 400,
 	canvasWidth = 400, minimumSpeed, maximumSpeed,
 	objectSize, play = true, fieldsOn, count, windiness,
 	gravity, particleColor, wind, windOn;
@@ -34,7 +34,7 @@ function toggleIntro(simulation) {
 // Run the rain simulation!
 function rain() {
 	particleColor = 'rgb(0,0,0)';// Black
-	maxParticles = 10000;
+	maxParticles = 1000;
 	emissionRate = 15;
 	particleSize = 1;
 	canvasHeight = 400;
@@ -68,7 +68,7 @@ function rain() {
 //Run the snow simulation!
 function snow() {
 	particleColor = 'rgb(0,0,0)';// Black
-	maxParticles = 10000;
+	maxParticles = 1000;
 	emissionRate = 10;
 	particleSize = 1;
 	canvasHeight = 400;

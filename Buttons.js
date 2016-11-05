@@ -3,8 +3,8 @@ var rateBool = true, particlesBool = true, particleSizeBool = true;
 
 // Maximums for the input fields.
 var maxEmissionRate = 2500;
-var maxParticlesNumber = 10000;
 var maxParticleSize = 25;
+var maxParticlesNumber = 2500;
 
 // Selector for the alert dialog.
 var alert = $('#alert');
@@ -38,6 +38,7 @@ $('#startSnowButton').on('click', function() {
 	toggleIntro(snow());
 	rainButton.removeAttr('disabled');
 	snowButton.prop('disabled','true');
+	setDefaults();
 });
 
 // Intro rain button should start the rain simulation and disable to rain button.
@@ -45,6 +46,7 @@ $('#startRainButton').on('click', function() {
 	toggleIntro(rain());
 	snowButton.removeAttr('disabled');
 	rainButton.prop('disabled','true');
+	setDefaults();
 });
 
 
@@ -103,7 +105,7 @@ $(function(){
 // Code involving maximum particles input.
 particlesButton.on('click', function() {
 	var num = particlesInput.val();
-	if(num >= 0 && num <= maxParticlesNumber) {
+	if(num >= 1 && num <= maxParticlesNumber) {
 		maxParticles = num;
 		particlesBool = true;
 		particlesButton.removeClass('alert-danger');
@@ -117,7 +119,7 @@ particlesButton.on('click', function() {
 
 });
 
-//Bind the enter button PARTICLES
+//Bind the enter button max PARTICLES
 $(function(){
   particlesInput.keypress(function(e){
     if(e.which == 13) {
@@ -136,10 +138,10 @@ $(function(){
   });
 });
 
-// Code involving maximum canvas size input.
+//Particle size button
 particleSizeButton.on('click', function() {
-	var num = particlesInput.val();
-	if(num >= 100 && num <= maxParticlesNumber) {
+	var num = particleSizeInput.val();
+	if(num >= 1 && num <= maxParticleSize) {
 		particleSize = num;
 		particleSizeBool = true;
 		particleSizeButton.removeClass('alert-danger');
@@ -152,7 +154,7 @@ particleSizeButton.on('click', function() {
 
 });
 
-//Bind the enter button CANVAS_HEIGHT
+// Particle size button on ENTER
 $(function(){
 	particleSizeInput.keypress(function(e){
 		if(e.which == 13) {
@@ -182,16 +184,18 @@ function setMaxParticleSizePlaceholder() {
 	particleSizeInput.prop('placeholder','between 1 and ' + maxParticleSize + ' (inclusive)');
 }
 
-// Sets the placeholder text of the inputs.
-setRateInputPlaceholder();
-setParticlesInputPlaceholder();
-setMaxParticleSizePlaceholder();
+function setDefaults() {
+	console.log('set defaults');
+	// Sets the placeholder text of the inputs.
+	setRateInputPlaceholder();
+	setParticlesInputPlaceholder();
+	setMaxParticleSizePlaceholder();
 
-// Sets the inputs' default values to the default values.
-rateInput.val(maxEmissionRate);
-particlesInput.val(maxParticlesNumber);
-particleSizeInput.val(maxParticleSize);
-
+	// Sets the inputs' default values to the default values.
+	rateInput.val(emissionRate);
+	particlesInput.val(maxParticles);
+	particleSizeInput.val(particleSize);
+}
 
 var rainButton = $('#rainButton');// Selector for the rain button
 var snowButton = $('#snowButton');// Selector for the snowButton
@@ -199,17 +203,19 @@ var snowButton = $('#snowButton');// Selector for the snowButton
 rainButton.on('click', function() {
 	playPause();// Stop all other simulations.
 	clearArrays();// Clear simulation.
-	rain();// Start the rain simluation.
 	snowButton.removeAttr('disabled');
 	rainButton.prop('disabled','true');
+	rain();// Start the rain simluation.
+	setDefaults();
 });
 
 snowButton.on('click', function() {
 	playPause();// Stop all other simulations.
 	clearArrays();// Clear simulation.
-	snow();// Start the snow simluation.
 	snowButton.prop('disabled','true');
 	rainButton.removeAttr('disabled');
+	snow();// Start the snow simluation.
+	setDefaults();
 });
 
 var windToggleButton = $('#windToggleButton');// Selector for the Wind toggle Button
